@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Azraq Center — Pesan Buket & Layanan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep: #0a1a3a;
+    --bg-deep-2: #0d2150;
+    --bg-card: #ffffff;
+    --bg-page: #f3f6fb;
+    --blue-900: #0b1f4d;
+    --blue-700: #1647b8;
+    --blue-500: #2f6fe0;
+    --blue-400: #4f8ef7;
+    --cyan-400: #4dd8ff;
+    --cyan-300: #8ee9ff;
+    --ink-900: #0c1830;
+    --ink-600: #5b6b8c;
+    --ink-400: #94a3c2;
+    --line: #e6ebf5;
+    --gold: #f3b94d;
+    --green: #1fb178;
+    --pink: #ff7ab8;
+    --radius-lg: 26px;
+    --radius-md: 18px;
+    --shadow-soft: 0 18px 40px -16px rgba(11,31,77,0.25);
+    --shadow-card: 0 10px 30px -12px rgba(11,31,77,0.18);
+    font-family: 'Manrope', sans-serif;
+  }
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  body{
+    background: var(--bg-page); color: var(--ink-900); -webkit-font-smoothing: antialiased;
+    display:flex; justify-content:center; min-height:100vh;
+  }
+  .display{ font-family:'Plus Jakarta Sans', sans-serif; }
+  .shell{
+    width:100%; max-width:430px; min-height:100vh; background: var(--bg-page);
+    position:relative; overflow-x:hidden; display:flex; flex-direction:column;
+  }
+  .statusbar{ height:14px; }
+  .screen{ flex:1; display:none; flex-direction:column; padding-bottom: 92px; animation: fadeIn .35s ease; }
+  .screen.active{ display:flex; }
+  @keyframes fadeIn{ from{ opacity:0; transform: translateY(8px); } to{ opacity:1; transform: translateY(0); } }
+
+  .hero{
+    background: radial-gradient(120% 100% at 100% 0%, rgba(77,216,255,0.18), transparent 60%),
+      linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-deep-2) 55%, #102a63 100%);
+    color:#fff; padding: 18px 22px 26px; border-radius: 0 0 32px 32px; position:relative; overflow:hidden;
+  }
+  .hero::before{
+    content:""; position:absolute; width:260px; height:260px;
+    background: radial-gradient(circle, rgba(79,142,247,0.35), transparent 70%);
+    top:-120px; right:-80px; border-radius:50%;
+  }
+  .topbar{ display:flex; align-items:center; justify-content:space-between; position:relative; z-index:2; }
+  .icon-btn{
+    width:38px;height:38px; border-radius:12px; background:rgba(255,255,255,0.10);
+    border:1px solid rgba(255,255,255,0.14); display:flex;align-items:center;justify-content:center; color:#fff; cursor:pointer;
+  }
+  .brand-row{ margin-top:18px; position:relative; z-index:2; }
+  .brand-row .logo{ display:flex; align-items:baseline; gap:8px; }
+  .brand-row .logo .mark{
+    width:30px;height:30px; border-radius:9px; background: linear-gradient(135deg, var(--cyan-400), var(--blue-500));
+    display:inline-flex;align-items:center;justify-content:center; font-weight:800; color:#06204a; font-size:14px;
+  }
+  .brand-row h1{ font-size:25px; letter-spacing:0.5px; font-weight:800; }
+  .brand-row .tagline{ font-size:10.5px; letter-spacing:3px; color: var(--cyan-300); margin-left:38px; margin-top:-2px; font-weight:600; }
+  .greet{ margin-top:14px; position:relative; z-index:2; }
+  .greet .wave{ font-size:14px; color:#cfe0ff; }
+  .greet h2{ font-size:18px; font-weight:700; margin-top:4px; line-height:1.3; }
+  .greet h2 span{ color: var(--cyan-300); }
+  .greet p{ font-size:12.5px; color:#a9bce4; margin-top:6px; }
+
+  .wa-card{
+    margin-top:18px; background: rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.16);
+    border-radius: var(--radius-md); padding:13px 14px; display:flex; align-items:center; gap:10px; position:relative; z-index:2;
+  }
+  .wa-card .ic{ width:34px;height:34px;border-radius:10px;background:#25D366;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+  .wa-card p{ font-size:11.5px; color:#dceaff; line-height:1.4; }
+  .wa-card b{ color:#fff; }
+
+  .quickmenu{ margin-top:18px; padding: 0 18px; position:relative; z-index:3; display:grid; grid-template-columns: repeat(4,1fr); gap:10px; }
+  .qm-item{
+    background:var(--bg-card); border-radius: var(--radius-md); padding:14px 6px 12px;
+    display:flex; flex-direction:column; align-items:center; gap:8px; box-shadow: var(--shadow-card);
+    cursor:pointer; border:1px solid var(--line); transition: transform .15s ease;
+  }
+  .qm-item:active{ transform: scale(0.95); }
+  .qm-icon{ width:42px;height:42px;border-radius:13px; display:flex;align-items:center;justify-content:center; }
+  .qm-item span{ font-size:11px; font-weight:700; color:var(--ink-900); text-align:center; }
+  .icon-call{ background:#e9f0ff; color:var(--blue-500); }
+  .icon-beauty{ background:#ffe9f5; color:var(--pink); }
+  .icon-tf{ background:#e6fbf2; color:var(--green); }
+  .icon-buket{ background:#fff3e3; color:var(--gold); }
+
+  .promo{
+    margin: 22px 18px 0; background: linear-gradient(135deg, #11215c, #163a8c 60%, #1b56c4);
+    border-radius: var(--radius-lg); padding:20px; color:#fff; position:relative; overflow:hidden; box-shadow: var(--shadow-card);
+  }
+  .promo::after{ content:""; position:absolute; right:-30px; top:-30px; width:160px; height:160px; background: radial-gradient(circle, rgba(77,216,255,0.35), transparent 70%); }
+  .promo h3{ font-size:17px; font-weight:800; max-width:78%; line-height:1.35; position:relative; z-index:2; }
+  .promo p{ font-size:12px; color:#bcd0ff; margin-top:8px; max-width:80%; position:relative; z-index:2; }
+  .promo-btn{ margin-top:14px; background:#fff; color:var(--blue-700); font-weight:700; font-size:12px; border:none; border-radius:12px; padding:9px 14px; cursor:pointer; position:relative; z-index:2; }
+
+  .section{ padding: 24px 18px 6px; }
+  .section-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+  .section-head h4{ font-size:15.5px; font-weight:800; }
+
+  .catalog-card{
+    background:#fff; border:1px solid var(--line); border-radius:var(--radius-md); padding:14px; margin-bottom:12px;
+    display:flex; gap:12px; align-items:center; cursor:pointer; box-shadow: var(--shadow-card);
+  }
+  .catalog-card .ic{ width:50px;height:50px;border-radius:14px; display:flex;align-items:center;justify-content:center; flex-shrink:0; font-size:21px; }
+  .catalog-card p{ font-size:13.5px; font-weight:800; }
+  .catalog-card small{ font-size:11.5px; color:var(--ink-400); display:block; margin-top:2px; }
+  .catalog-card .price{ font-size:12px; font-weight:700; color:var(--blue-700); margin-top:4px; }
+
+  .store-card{
+    margin: 18px 18px 0; background:#fff; border:1px solid var(--line); border-radius:var(--radius-md);
+    padding:14px 16px; display:flex; justify-content:space-between; align-items:center; box-shadow: var(--shadow-card);
+  }
+  .store-info{ display:flex; gap:10px; align-items:center; }
+  .store-pin{ width:34px;height:34px;border-radius:10px;background:#e9f0ff;color:var(--blue-500);display:flex;align-items:center;justify-content:center; }
+  .store-info p{ font-size:12.5px; font-weight:700; }
+  .store-info small{ font-size:11px; color:var(--ink-400); }
+  .store-open{ font-size:11.5px; font-weight:700; color:var(--green); }
+
+  .bottomnav{
+    position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px;
+    background:#fff; border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-around;
+    padding: 10px 8px calc(10px + env(safe-area-inset-bottom)); z-index:50;
+  }
+  .nav-item{ display:flex; flex-direction:column; align-items:center; gap:4px; color:var(--ink-400); font-size:10.5px; font-weight:700; cursor:pointer; background:none; border:none; }
+  .nav-item.active{ color: var(--blue-500); }
+  .nav-wa{
+    width:54px;height:54px;border-radius:50%; background: #25D366; display:flex;align-items:center;justify-content:center;color:#fff;
+    margin-top:-30px; box-shadow: 0 12px 24px -8px rgba(37,211,102,0.55); border:4px solid #fff; cursor:pointer;
+  }
+
+  .page-head{
+    display:flex; align-items:center; gap:12px; padding: 18px 18px 16px;
+    background: linear-gradient(160deg, var(--bg-deep), var(--bg-deep-2)); color:#fff; border-radius:0 0 24px 24px;
+  }
+  .back-btn{
+    width:36px;height:36px;border-radius:11px;background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.16); color:#fff; display:flex;align-items:center;justify-content:center; cursor:pointer;
+  }
+  .page-head h3{ font-size:17px; font-weight:800; }
+  .page-head small{ display:block; font-size:11px; color:#a9bce4; margin-top:2px; font-weight:500; }
+  .content-pad{ padding: 20px 18px 10px; }
+
+  .field{ margin-bottom:14px; }
+  .field label{ font-size:12px; font-weight:700; color:var(--ink-600); display:block; margin-bottom:7px; }
+  .field input, .field select, .field textarea{
+    width:100%; border:1.5px solid var(--line); border-radius:13px; padding:12px 14px; font-size:14px;
+    font-family:'Manrope', sans-serif; color:var(--ink-900); background:#fff; outline:none; transition: border-color .15s ease;
+  }
+  .field textarea{ resize:vertical; min-height:70px; }
+  .field input:focus, .field select:focus, .field textarea:focus{ border-color: var(--blue-400); }
+
+  .option-group{ display:flex; flex-direction:column; gap:10px; margin-bottom:18px; }
+  .option-card{ border:1.5px solid var(--line); border-radius:14px; padding:13px 14px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; background:#fff; }
+  .option-card.selected{ border-color: var(--blue-500); background: #f4f9ff; }
+  .option-left{ display:flex; gap:10px; align-items:center; }
+  .opt-icon{ width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px; }
+  .option-card p{ font-size:13px; font-weight:700; }
+  .option-card small{ font-size:11px; color:var(--ink-400); }
+  .check-circle{ width:20px;height:20px;border-radius:50%;border:2px solid var(--line); flex-shrink:0; display:flex;align-items:center;justify-content:center; }
+  .option-card.selected .check-circle{ border-color: var(--blue-500); background:var(--blue-500); }
+
+  .summary-box{ background: var(--bg-deep); color:#fff; border-radius:16px; padding:16px; margin-top:6px; }
+  .summary-row{ display:flex; justify-content:space-between; font-size:12.5px; padding:6px 0; color:#cfe0ff; }
+  .summary-row.total{ border-top:1px solid rgba(255,255,255,0.15); margin-top:6px; padding-top:12px; font-size:15px; font-weight:800; color:#fff; }
+
+  .primary-btn{
+    width:100%; border:none; border-radius:15px; padding:15px; background: #25D366; color:#fff;
+    font-weight:800; font-size:14.5px; cursor:pointer; font-family:'Plus Jakarta Sans', sans-serif;
+    box-shadow: 0 14px 26px -10px rgba(37,211,102,0.5); display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .primary-btn:active{ transform: scale(0.98); }
+  .primary-btn:disabled{ opacity:0.5; cursor:not-allowed; box-shadow:none; }
+  .info-banner{
+    background:#eef6ff; border:1px solid #d6e8ff; border-radius:14px; padding:12px 14px; font-size:11.5px;
+    color:var(--blue-700); display:flex; gap:8px; align-items:flex-start; margin-bottom:16px; line-height:1.5;
+  }
+
+  .buket-hero{
+    background: linear-gradient(135deg, #fff3e3, #ffe2e9); border-radius: var(--radius-md); padding:16px;
+    margin-bottom:18px; display:flex; gap:12px; align-items:center;
+  }
+  .buket-hero .emoji-circle{ font-size:26px; width:52px; height:52px; border-radius:50%; background:#fff; display:flex;align-items:center;justify-content:center; box-shadow:var(--shadow-card); }
+  .buket-hero p{ font-size:12.5px; color:#7a5230; line-height:1.5; font-weight:600; }
+
+  .profile-card{ background:#fff; border-radius:18px; padding:18px; display:flex; gap:14px; align-items:center; box-shadow: var(--shadow-card); margin-bottom:18px; }
+  .avatar{ width:56px;height:56px;border-radius:50%; background: linear-gradient(135deg,var(--blue-400),var(--cyan-400)); display:flex;align-items:center;justify-content:center; color:#fff; font-weight:800; font-size:20px; }
+  .menu-list{ background:#fff; border-radius:18px; box-shadow: var(--shadow-card); overflow:hidden; }
+  .menu-row{ display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid var(--line); cursor:pointer; }
+  .menu-row:last-child{ border-bottom:none; }
+  .menu-row .mi{ width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center; }
+  .menu-row p{ font-size:13px; font-weight:700; flex:1; }
+
+  .toast{
+    position:fixed; bottom:110px; left:50%; transform:translateX(-50%) translateY(20px);
+    background: var(--ink-900); color:#fff; padding:13px 20px; border-radius:14px; font-size:13px; font-weight:700;
+    display:flex; align-items:center; gap:10px; box-shadow: 0 14px 30px -10px rgba(0,0,0,0.4); opacity:0; pointer-events:none;
+    transition: all .3s ease; z-index:200; max-width: 90%;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+  .toast .tick{ width:20px;height:20px;border-radius:50%; background:var(--green); display:flex;align-items:center;justify-content:center; flex-shrink:0; }
+  ::-webkit-scrollbar{ width:0; height:0; }
+</style>
+</head>
+<body>
+
+<div class="shell" id="shell">
+  <div class="statusbar"></div>
+
+  <!-- ============ HOME ============ -->
+  <div class="screen active" id="screen-home">
+    <div class="hero">
+      <div class="topbar">
+        <div class="icon-btn" onclick="goScreen('profile')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="icon-btn" onclick="openWA('umum','Halo Azraq Center, saya mau tanya-tanya dulu.')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.73 21a2 2 0 01-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+
+      <div class="brand-row">
+        <div class="logo"><span class="mark display">A</span><h1 class="display">AZRAQ</h1></div>
+        <div class="tagline">C E N T E R</div>
+      </div>
+
+      <div class="greet">
+        <p class="wave">Assalamu'alaikum 👋</p>
+        <h2 class="display">Pesan <span>buket favoritmu</span> sekarang</h2>
+        <p>Buket bunga, uang, snack, dan layanan lainnya — dipesan langsung lewat WhatsApp.</p>
+      </div>
+
+      <div class="wa-card">
+        <div class="ic">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.8-.4-1.6-.9-2.3-1.6-.6-.6-1.1-1.3-1.5-2.1-.1-.2 0-.4.1-.5.2-.2.5-.5.6-.7.1-.2.1-.4 0-.6-.1-.2-.5-1.3-.7-1.7-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.7.7-1 1.5-1 2.5.1 1.2.6 2.4 1.4 3.5 1.5 2 3.4 3.5 5.7 4.2 1.3.4 2.4.1 3.3-.7.4-.4.6-.9.7-1.5.1-.2-.1-.4-.4-.5z" fill="#fff"/></svg>
+        </div>
+        <p>Semua pesanan masuk langsung ke WhatsApp <b>Azraq Center</b>, dibalas dalam jam buka toko.</p>
+      </div>
+    </div>
+
+    <div class="quickmenu">
+      <div class="qm-item" onclick="goScreen('call')">
+        <div class="qm-icon icon-call"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.68 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.32 1.85.55 2.81.68A2 2 0 0122 16.92z" stroke="currentColor" stroke-width="2"/></svg></div>
+        <span>Pulsa</span>
+      </div>
+      <div class="qm-item" onclick="goScreen('beauty')">
+        <div class="qm-icon icon-beauty"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2c1.5 3 4 4 4 8a4 4 0 11-8 0c0-4 2.5-5 4-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 19c0-1.5 1.5-2 4-2s4 .5 4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <span>Kecantikan</span>
+      </div>
+      <div class="qm-item" onclick="openWA('transfer','Halo Admin Tausil Uang, saya mau tanya soal transfer dana.')">
+        <div class="qm-icon icon-tf"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 7h13M16 3l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 17H4M8 21l-4-4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span>Transfer Dana</span>
+      </div>
+      <div class="qm-item" onclick="goScreen('buket')">
+        <div class="qm-icon icon-buket"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="8" r="3" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="8" r="3" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="13" r="3" stroke="currentColor" stroke-width="2"/><path d="M12 16v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <span>Azraq Buket</span>
+      </div>
+    </div>
+
+    <div class="promo">
+      <h3 class="display">Buket spesial untuk wisuda & ulang tahun</h3>
+      <p>Pilih jenis, isi pesan kartu ucapan, kirim pesanan langsung lewat WhatsApp.</p>
+      <button class="promo-btn" onclick="goScreen('buket')">Pesan Buket</button>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><h4>Layanan Kami</h4></div>
+      <div class="catalog-card" onclick="goScreen('buket')">
+        <div class="ic icon-buket">💐</div>
+        <div><p>Azraq Buket</p><small>Bunga, uang, snack & kombinasi</small><span class="price">Mulai Rp40.000</span></div>
+      </div>
+      <div class="catalog-card" onclick="goScreen('call')">
+        <div class="ic icon-call">📱</div>
+        <div><p>Azraq Call</p><small>Pulsa, paket data & token PLN</small><span class="price">Mulai Rp15.000</span></div>
+      </div>
+      <div class="catalog-card" onclick="goScreen('beauty')">
+        <div class="ic icon-beauty">💆‍♀️</div>
+        <div><p>Azraq Beauty</p><small>Booking salon & skincare</small><span class="price">Mulai Rp80.000</span></div>
+      </div>
+      <div class="catalog-card" onclick="openWA('transfer','Halo Admin Tausil Uang, saya mau tanya soal transfer dana.')">
+        <div class="ic icon-tf">💸</div>
+        <div><p>Tausil Uang</p><small>Transfer dana cepat & aman</small><span class="price">Chat Admin Transfer</span></div>
+      </div>
+    </div>
+
+    <div class="store-card">
+      <div class="store-info">
+        <div class="store-pin"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="2.5" stroke="currentColor" stroke-width="2"/></svg></div>
+        <div><p>Jl. Contoh No. 1, Kota Anda</p><small>Toko utama Azraq Center</small></div>
+      </div>
+      <div class="store-open">Buka 08.00–20.00</div>
+    </div>
+  </div>
+
+  <!-- ============ CALL / PULSA ============ -->
+  <div class="screen" id="screen-call">
+    <div class="page-head">
+      <div class="back-btn" onclick="goScreen('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div><h3 class="display">Azraq Call</h3><small>Pulsa, paket data & token PLN</small></div>
+    </div>
+    <div class="content-pad">
+      <div class="info-banner">📱 Pesanan layanan ini akan masuk ke <b>Admin Pulsa</b> via WhatsApp.</div>
+      <div class="field">
+        <label>Nomor HP / ID Pelanggan</label>
+        <input type="text" id="callNumber" placeholder="contoh: 0812xxxxxxx">
+      </div>
+      <div class="field">
+        <label>Pilih Produk</label>
+        <div class="option-group" id="callProducts">
+          <div class="option-card" data-price="15000" onclick="selectOption(this,'callProducts','callBtn')">
+            <div class="option-left"><div class="opt-icon icon-call">📱</div><div><p>Pulsa Rp15.000</p><small>Semua operator</small></div></div>
+            <div class="check-circle"></div>
+          </div>
+          <div class="option-card" data-price="50000" onclick="selectOption(this,'callProducts','callBtn')">
+            <div class="option-left"><div class="opt-icon icon-call">📱</div><div><p>Pulsa Rp50.000</p><small>Semua operator</small></div></div>
+            <div class="check-circle"></div>
+          </div>
+          <div class="option-card" data-price="35000" onclick="selectOption(this,'callProducts','callBtn')">
+            <div class="option-left"><div class="opt-icon" style="background:#e9f0ff;color:var(--blue-500);">📶</div><div><p>Paket Data 5GB</p><small>Berlaku 30 hari</small></div></div>
+            <div class="check-circle"></div>
+          </div>
+          <div class="option-card" data-price="100000" onclick="selectOption(this,'callProducts','callBtn')">
+            <div class="option-left"><div class="opt-icon" style="background:#fff6e0;color:#e0a020;">⚡</div><div><p>Token PLN Rp100.000</p><small>Listrik prabayar</small></div></div>
+            <div class="check-circle"></div>
+          </div>
+        </div>
+      </div>
+      <button class="primary-btn" id="callBtn" disabled onclick="orderCall()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.8-.4-1.6-.9-2.3-1.6-.6-.6-1.1-1.3-1.5-2.1-.1-.2 0-.4.1-.5.2-.2.5-.5.6-.7.1-.2.1-.4 0-.6-.1-.2-.5-1.3-.7-1.7-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.7.7-1 1.5-1 2.5.1 1.2.6 2.4 1.4 3.5 1.5 2 3.4 3.5 5.7 4.2 1.3.4 2.4.1 3.3-.7.4-.4.6-.9.7-1.5.1-.2-.1-.4-.4-.5z" fill="#fff"/></svg>
+        Pilih produk dahulu
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ BEAUTY ============ -->
+  <div class="screen" id="screen-beauty">
+    <div class="page-head">
+      <div class="back-btn" onclick="goScreen('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div><h3 class="display">Azraq Beauty</h3><small>Booking salon & skincare</small></div>
+    </div>
+    <div class="content-pad">
+      <div class="info-banner">💆‍♀️ Pesanan layanan ini akan masuk ke <b>Admin Beauty</b> via WhatsApp.</div>
+      <div class="field">
+        <label>Pilih Layanan</label>
+        <div class="option-group" id="beautyProducts">
+          <div class="option-card" data-price="80000" onclick="selectOption(this,'beautyProducts','beautyBtn')">
+            <div class="option-left"><div class="opt-icon icon-beauty">💇‍♀️</div><div><p>Potong Rambut</p><small>45 menit</small></div></div>
+            <div class="check-circle"></div>
+          </div>
+          <div class="option-card" data-price="150000" onclick="selectOption(this,'beautyProducts','beautyBtn')">
+            <div class="option-left"><div class="opt-icon icon-beauty">✨</div><div><p>Facial Treatment</p><small>60 menit</small></div></div>
+            <div class="check-circle"></div>
+          </div>
+          <div class="option-card" data-price="120000" onclick="selectOption(this,'beautyProducts','beautyBtn')">
+            <div class="option-left"><div class="opt-icon icon-beauty">💆‍♀️</div><div><p>Spa & Pijat Relaksasi</p><small>50 menit</small></div></div>
+            <div class="check-circle"></div>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Tanggal Booking</label>
+        <input type="date" id="beautyDate">
+      </div>
+      <div class="field">
+        <label>Nama Anda</label>
+        <input type="text" id="beautyName" placeholder="Nama lengkap">
+      </div>
+      <button class="primary-btn" id="beautyBtn" disabled onclick="orderBeauty()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.8-.4-1.6-.9-2.3-1.6-.6-.6-1.1-1.3-1.5-2.1-.1-.2 0-.4.1-.5.2-.2.5-.5.6-.7.1-.2.1-.4 0-.6-.1-.2-.5-1.3-.7-1.7-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.7.7-1 1.5-1 2.5.1 1.2.6 2.4 1.4 3.5 1.5 2 3.4 3.5 5.7 4.2 1.3.4 2.4.1 3.3-.7.4-.4.6-.9.7-1.5.1-.2-.1-.4-.4-.5z" fill="#fff"/></svg>
+        Pilih layanan dahulu
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ BUKET ============ -->
+  <div class="screen" id="screen-buket">
+    <div class="page-head">
+      <div class="back-btn" onclick="goScreen('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div><h3 class="display">Azraq Buket</h3><small>Buket bunga, uang & snack custom</small></div>
+    </div>
+    <div class="content-pad">
+      <div class="info-banner">💐 Pesanan layanan ini akan masuk ke <b>Admin Azraq Buket</b> via WhatsApp.</div>
+      <div class="buket-hero">
+        <div class="emoji-circle">💐</div>
+        <p>Rangkai buket impianmu — pilih jenis, isi nominal uang, dan tentukan ukuran. Cocok untuk wisuda, ulang tahun, dan hari spesial lainnya.</p>
+      </div>
+
+      <div class="field">
+        <label>Jenis Buket</label>
+        <div class="option-group" id="buketType">
+          <div class="option-card" data-price="0" data-name="Buket Bunga" onclick="selectOption(this,'buketType'); calcBuket();">
+            <div class="option-left"><div class="opt-icon icon-buket">🌸</div><div><p>Buket Bunga</p><small>Bunga artificial premium</small></div></div>
+            <div class="check-circle"></div>
+          </div>
+          <div class="option-card" data-price="15000" data-name="Buket Uang" onclick="selectOption(this,'buketType'); calcBuket();">
+            <div class="option-left"><div class="opt-icon icon-buket">💵</div><div><p>Buket Uang</p><small>+Rp15.000 biaya rangkai</small></div></div>
+            <div class="check-circle"></div>
+          </div>
+          <div class="option-card" data-price="30000" data-name="Kombinasi (Bunga+Uang+Snack)" onclick="selectOption(this,'buketType'); calcBuket();">
+            <div class="option-left"><div class="opt-icon icon-buket">🎁</div><div><p>Kombinasi (Bunga+Uang+Snack)</p><small>+Rp30.000 biaya rangkai</small></div></div>
+            <div class="check-circle"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Nominal Uang di Dalam Buket</label>
+        <input type="number" id="buketCash" placeholder="0 jika tanpa uang" value="0" oninput="calcBuket()">
+        <small style="display:block;margin-top:6px;color:var(--ink-400);font-size:11px;">Nominal ini akan diterima penuh oleh penerima buket.</small>
+      </div>
+
+      <div class="field">
+        <label>Ukuran Buket</label>
+        <div class="option-group" id="buketSize">
+          <div class="option-card" data-price="40000" data-name="Kecil" onclick="selectOption(this,'buketSize'); calcBuket();">
+            <div class="option-left"><div class="opt-icon" style="background:#f0f0ff;color:#7a5af0;">S</div><div><p>Kecil</p><small>Cocok untuk hadiah simpel</small></div></div>
+            <div class="check-circle"></div>
+          </div>
+          <div class="option-card" data-price="65000" data-name="Sedang" onclick="selectOption(this,'buketSize'); calcBuket();">
+            <div class="option-left"><div class="opt-icon" style="background:#f0f0ff;color:#7a5af0;">M</div><div><p>Sedang</p><small>Paling populer</small></div></div>
+            <div class="check-circle"></div>
+          </div>
+          <div class="option-card" data-price="95000" data-name="Besar" onclick="selectOption(this,'buketSize'); calcBuket();">
+            <div class="option-left"><div class="opt-icon" style="background:#f0f0ff;color:#7a5af0;">L</div><div><p>Besar</p><small>Untuk momen spesial</small></div></div>
+            <div class="check-circle"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Nama Anda</label>
+        <input type="text" id="buketBuyerName" placeholder="Nama lengkap">
+      </div>
+      <div class="field">
+        <label>Tanggal Dibutuhkan</label>
+        <input type="date" id="buketDate">
+      </div>
+      <div class="field">
+        <label>Pesan di Kartu Ucapan (opsional)</label>
+        <textarea id="buketMsg" placeholder="contoh: Selamat wisuda, sukses selalu!"></textarea>
+      </div>
+
+      <div class="summary-box" id="buketSummary">
+        <div class="summary-row"><span>Biaya rangkai</span><span id="sumCraft">Rp0</span></div>
+        <div class="summary-row"><span>Ukuran buket</span><span id="sumSize">Rp0</span></div>
+        <div class="summary-row"><span>Nominal uang (kembali penuh)</span><span id="sumCash">Rp0</span></div>
+        <div class="summary-row total"><span>Total Estimasi</span><span id="sumTotal">Rp0</span></div>
+      </div>
+
+      <button class="primary-btn" style="margin-top:16px;" id="buketBtn" onclick="orderBuket()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.8-.4-1.6-.9-2.3-1.6-.6-.6-1.1-1.3-1.5-2.1-.1-.2 0-.4.1-.5.2-.2.5-.5.6-.7.1-.2.1-.4 0-.6-.1-.2-.5-1.3-.7-1.7-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.7.7-1 1.5-1 2.5.1 1.2.6 2.4 1.4 3.5 1.5 2 3.4 3.5 5.7 4.2 1.3.4 2.4.1 3.3-.7.4-.4.6-.9.7-1.5.1-.2-.1-.4-.4-.5z" fill="#fff"/></svg>
+        Pesan via WhatsApp
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ PROFILE ============ -->
+  <div class="screen" id="screen-profile">
+    <div class="page-head">
+      <div class="back-btn" onclick="goScreen('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div><h3 class="display">Tentang Azraq Center</h3><small>Informasi & kontak</small></div>
+    </div>
+    <div class="content-pad">
+      <div class="profile-card">
+        <div class="avatar display">A</div>
+        <div>
+          <p style="font-weight:800;font-size:14.5px;">Azraq Center</p>
+          <small style="color:var(--ink-400);font-size:12px;">Buket, pulsa, dan layanan kecantikan</small>
+        </div>
+      </div>
+      <div class="menu-list">
+        <div class="menu-row" onclick="openWA('umum','Halo Azraq Center, saya mau tanya-tanya dulu.')">
+          <div class="mi" style="background:#e6fbf2;color:#25D366;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p>Chat WhatsApp Langsung</p>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="var(--ink-400)" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="menu-row">
+          <div class="mi icon-buket">🕐</div><p>Buka setiap hari 08.00–20.00</p>
+        </div>
+        <div class="menu-row">
+          <div class="mi icon-call">📍</div><p>Jl. Contoh No. 1, Kota Anda</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ BOTTOM NAV ============ -->
+  <div class="bottomnav">
+    <button class="nav-item active" data-nav="home" onclick="goScreen('home')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-8 9 8M5 10v10h14V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Beranda
+    </button>
+    <button class="nav-item" data-nav="buket" onclick="goScreen('buket')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="8" r="3" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="8" r="3" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="13" r="3" stroke="currentColor" stroke-width="2"/></svg>
+      Buket
+    </button>
+    <div class="nav-wa" onclick="openWA('umum','Halo Azraq Center, saya mau tanya-tanya dulu.')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.8-.4-1.6-.9-2.3-1.6-.6-.6-1.1-1.3-1.5-2.1-.1-.2 0-.4.1-.5.2-.2.5-.5.6-.7.1-.2.1-.4 0-.6-.1-.2-.5-1.3-.7-1.7-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.7.7-1 1.5-1 2.5.1 1.2.6 2.4 1.4 3.5 1.5 2 3.4 3.5 5.7 4.2 1.3.4 2.4.1 3.3-.7.4-.4.6-.9.7-1.5.1-.2-.1-.4-.4-.5z" fill="#fff"/></svg>
+    </div>
+    <button class="nav-item" data-nav="services" onclick="goScreen('call')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M19 21l-7-4-7 4V5a2 2 0 012-2h10a2 2 0 012 2v16z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Layanan
+    </button>
+    <button class="nav-item" data-nav="profile" onclick="goScreen('profile')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Info
+    </button>
+  </div>
+
+  <div class="toast" id="toast">
+    <div class="tick" id="toastIcon">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <span id="toastText">Berhasil!</span>
+  </div>
+</div>
+
+<script>
+  // GANTI nomor di bawah sesuai admin masing-masing layanan.
+  // Format: kode negara + nomor, TANPA tanda + dan TANPA spasi/strip.
+  const WA_NUMBERS = {
+    buket: "6287863453066",     // Admin Azraq Buket
+    transfer: "201553004698",   // Admin Tausil Uang / Transfer Dana
+    pulsa: "201557909157",      // Admin Azraq Call (Pulsa, Paket Data, Token PLN)
+    beauty: "201552321854",     // Admin Azraq Beauty — GANTI sesuai admin beauty kamu
+    umum: "201552321854"        // Nomor default untuk chat umum / tanya-tanya
+  };
+
+  const navMap = { home:'home', buket:'buket', services:'services', profile:'profile' };
+
+  function formatRp(n){ return 'Rp ' + Math.round(n).toLocaleString('id-ID'); }
+
+  function goScreen(name){
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + name).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const navKey = navMap[name];
+    if(navKey){
+      const el = document.querySelector('.nav-item[data-nav="'+navKey+'"]');
+      if(el) el.classList.add('active');
+    }
+    window.scrollTo(0,0);
+  }
+
+  function showToast(msg, type){
+    const toast = document.getElementById('toast');
+    const icon = document.getElementById('toastIcon');
+    document.getElementById('toastText').textContent = msg;
+    if(type === 'error'){
+      icon.style.background = '#e2475a';
+      icon.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>';
+    } else {
+      icon.style.background = '#1fb178';
+      icon.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    }
+    toast.classList.add('show');
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(()=> toast.classList.remove('show'), 2600);
+  }
+
+  function openWA(adminKey, message){
+    const number = WA_NUMBERS[adminKey] || WA_NUMBERS.umum;
+    const url = 'https://wa.me/' + number + '?text=' + encodeURIComponent(message);
+    window.open(url, '_blank');
+  }
+
+  // ---- Generic option selector ----
+  function selectOption(el, groupId, btnId){
+    const group = document.getElementById(groupId);
+    group.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    if(btnId){
+      const btn = document.getElementById(btnId);
+      btn.disabled = false;
+      const priceText = formatRp(parseInt(el.dataset.price));
+      btn.innerHTML = btn.innerHTML.replace(/Pilih.*dahulu|Pesan.*—.*$/, 'Pesan via WhatsApp — ' + priceText);
+    }
+  }
+
+  function orderCall(){
+    const selected = document.querySelector('#callProducts .option-card.selected');
+    const number = document.getElementById('callNumber').value.trim();
+    if(!number){ showToast('Isi nomor HP / ID pelanggan', 'error'); return; }
+    if(!selected){ showToast('Pilih produk dahulu', 'error'); return; }
+    const name = selected.querySelector('p').textContent;
+    const price = parseInt(selected.dataset.price);
+    openWA('pulsa', msg);
+  }
+
+  function orderBeauty(){
+    const selected = document.querySelector('#beautyProducts .option-card.selected');
+    const date = document.getElementById('beautyDate').value;
+    const name = document.getElementById('beautyName').value.trim();
+    if(!selected){ showToast('Pilih layanan dahulu', 'error'); return; }
+    if(!date){ showToast('Pilih tanggal booking', 'error'); return; }
+    if(!name){ showToast('Isi nama Anda', 'error'); return; }
+    const serviceName = selected.querySelector('p').textContent;
+    const price = parseInt(selected.dataset.price);
+    openWA('beauty', msg);
+  }
+
+  function calcBuket(){
+    const typeSel = document.querySelector('#buketType .option-card.selected');
+    const sizeSel = document.querySelector('#buketSize .option-card.selected');
+    const cash = parseInt(document.getElementById('buketCash').value) || 0;
+    const craftPrice = typeSel ? parseInt(typeSel.dataset.price) : 0;
+    const sizePrice = sizeSel ? parseInt(sizeSel.dataset.price) : 0;
+    document.getElementById('sumCraft').textContent = formatRp(craftPrice);
+    document.getElementById('sumSize').textContent = formatRp(sizePrice);
+    document.getElementById('sumCash').textContent = formatRp(cash);
+    document.getElementById('sumTotal').textContent = formatRp(craftPrice + sizePrice + cash);
+  }
+
+  function orderBuket(){
+    const typeSel = document.querySelector('#buketType .option-card.selected');
+    const sizeSel = document.querySelector('#buketSize .option-card.selected');
+    const buyerName = document.getElementById('buketBuyerName').value.trim();
+    const date = document.getElementById('buketDate').value;
+    if(!typeSel){ showToast('Pilih jenis buket dahulu', 'error'); return; }
+    if(!sizeSel){ showToast('Pilih ukuran buket dahulu', 'error'); return; }
+    if(!buyerName){ showToast('Isi nama Anda', 'error'); return; }
+    if(!date){ showToast('Pilih tanggal dibutuhkan', 'error'); return; }
+    const cash = parseInt(document.getElementById('buketCash').value) || 0;
+    const noteMsg = document.getElementById('buketMsg').value.trim();
+    const typeName = typeSel.dataset.name;
+    const sizeName = sizeSel.dataset.name;
+    const craftPrice = parseInt(typeSel.dataset.price);
+    const sizePrice = parseInt(sizeSel.dataset.price);
+    const total = craftPrice + sizePrice + cash;
+
+    let msg = `Halo Azraq Center, saya mau pesan buket:\n\n*Jenis:* ${typeName}\n*Ukuran:* ${sizeName}\n*Nominal uang di dalam:* ${formatRp(cash)}\n*Estimasi total:* ${formatRp(total)}\n*Nama:* ${buyerName}\n*Tanggal dibutuhkan:* ${date}`;
+    if(noteMsg){ msg += `\n*Pesan kartu ucapan:* ${noteMsg}`; }
+    openWA('buket', msg);
+  }
+</script>
+
+</body>
+</html>
